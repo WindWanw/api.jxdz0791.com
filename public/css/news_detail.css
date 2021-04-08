@@ -1,0 +1,67 @@
+.new-text {
+    margin-top: 30px;
+    float: left;
+}
+
+.news-content {
+    margin-top: 40px;
+}
+
+.h-text {
+    margin-top: 50px;
+}
+
+.news-content p {
+    text-align: center;
+}
+
+.img-content {
+    margin-top: 30px;
+}
+
+.img-wh {
+    margin-top: 20px;
+    margin-right: 500px;
+    width: 700px;
+    height: 350px;
+}
+
+.section {
+    margin-top: 14px;
+    text-indent:2em;
+    width: 720px;
+    height: 95px;
+    font-size: 8px;
+    color: #666666;
+}
+
+.second-section {
+    text-indent:2em;
+    width: 720px;
+    height: 55px;
+    font-size: 8px;
+    color: #666666;
+    margin-top: 30px;
+}
+
+.last-section {
+    font-size: 6px;
+    width: 680px;
+    height: 17px;
+    color: #666666;
+}
+
+.fn-section {
+    margin-top: 50px;
+}
+.fn-a {
+    font-family: "Microsoft YaHei UI";
+    color: #2878FF;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fn-a a:hover {
+    background-color: #2878FF;
+}

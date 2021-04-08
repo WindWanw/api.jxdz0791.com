@@ -1,0 +1,93 @@
+.head-section {
+    margin-left: 200px;
+}
+
+.head-section img {
+    width: 1300px;
+    height: 500px;
+}
+
+.rank {
+    margin-top: 50px;
+
+}
+
+.rank a {
+    font-family: "Microsoft YaHei UI";
+    color: #333333;
+    font-size: 15px;
+    margin-left: 30px;
+    list-style: none;
+}
+
+.rank a:hover {
+    color: #FFFFFF;
+    background-color: #2878FF;
+}
+
+.text-gra {
+    float: left;
+    margin-top: 70px;
+    margin-left: 400px;
+    width: 1500px;
+}
+
+.left-img {
+    float: left;
+    width: 15%;
+    height: 125px;
+}
+
+.left-gra {
+    float: left;
+    margin-left: 20px;
+    width: 470px;
+    color: #808080;
+    font-size: 5px;
+}
+
+.left-gra img {
+    width: 9px;
+    height: 9px;
+    background-color: #333333;
+    margin-top: 15px;
+}
+
+.right-gra {
+    float: right;
+    margin-top: 20px;
+    margin-right: 550px;
+    color: #B3B3B3;
+    width: 120px;
+    height: 80px;
+}
+
+.right-gra img {
+    margin-left: 5px;
+    margin-top: 10px;
+    width: 15px;
+    height: 15px;
+}
+
+.line {
+    margin-left: 65px;
+    color: #2878FF;
+}
+
+.paging {
+    float: left;
+    margin-top: 100px;
+    margin-left: 800px;
+    list-style: none;
+}
+
+.paging a {
+    color: #1A1A1A;
+    background-color: #E6E6E6;
+}
+
+.paging a:hover {
+    color: #FFFFFF;
+    background-color: #2878FF;
+}
+

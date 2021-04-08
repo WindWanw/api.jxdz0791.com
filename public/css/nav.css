@@ -1,0 +1,58 @@
+nav {
+    line-height: 60px;
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.xl {
+    display: flex;
+    background: linear-gradient(#4A6DFF, #57AAF8);
+    border-radius: 20px;
+    width: 75px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+}
+.xl span {
+    margin-right: 5px;
+}
+nav .link-list {
+    margin-left: 80px;
+
+}
+nav .link-list li {
+    width: 77px;
+    justify-content: center;
+    position: relative;
+}
+
+nav .link-list li.active a{
+    color: #4A6DFF ;
+
+}
+nav .link-list li.active::before {
+    position: absolute;
+    bottom: 0;
+    content: "";
+    background: linear-gradient(#4A6DFF, #57AAF8);
+
+
+    height: 3px;
+    left: 20%;
+    right: 20%;
+}
+
+
+nav .phone {
+    margin-left: 12px;
+    margin-right: 6px;
+}
+
+nav .phone-text {
+    font-weight: bold;
+}

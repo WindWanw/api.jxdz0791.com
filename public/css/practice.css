@@ -1,0 +1,214 @@
+nav .link-list li.active::before {
+    width: 60px;
+}
+
+.introduction {
+    margin-top: 30px;
+}
+
+.introduction p {
+
+    text-align: center;
+}
+
+.introduction-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 60px;
+}
+
+.introduction-container .left {
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+    position: relative;
+    padding: 0 60px;
+}
+
+.introduction-container .left::before {
+    position: absolute;
+    box-shadow: 4px 4px 4px 4px #ccc;
+    content: "";
+    left: 0;
+    right: 0;
+    z-index: 2;
+    top: 50px;
+    bottom: -50px;
+}
+
+.introduction-container .left img {
+    position: relative;
+    z-index: 9;
+    width: 550px;
+}
+
+.introduction-container .left p {
+    font-size: 12px;
+    text-align: left;
+    color: #999999;
+    margin-top: 20px;
+    width: 550px;
+}
+
+.introduction-container .left .top-title {
+    color: #333333;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.introduction-container .right {
+    margin-top: 100px;
+    position: relative;
+    z-index: 3;
+    margin-left: -50px;
+}
+
+.team {
+    margin-top: 90px;
+    margin-bottom: 35px;
+}
+
+.team p {
+    text-align: center
+}
+
+.pic {
+    margin-bottom: 10px;
+}
+
+.pic .left img {
+    width: 700px;
+    height: 457px;
+    vertical-align: middle;
+}
+
+.pic .right {
+    background: #FBB730;
+    height: 457px;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.pic {
+    position: relative;
+}
+
+.pic .pos-container {
+    width: 585px;
+    position: absolute;
+    height: 350px;
+    padding: 30px 100px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30%;
+    background: white;
+    z-index: auto;
+    cursor: pointer;
+
+}
+
+.pic .pos-container h1 {
+    color: #999999;
+    font-size: 12px;
+    margin-top: 60px;
+    line-height: 22px;
+}
+
+.pic .pos-container h3 {
+    font-size: 16px;
+}
+
+.pic .pos-container .pos-bg {
+    background: #B3B3B3;
+    height: 2px;
+    width: 120px;
+    position: absolute;
+    top: 80px;
+    left: 0;
+}
+
+.img-qy {
+
+    justify-content: space-around;
+}
+
+.img-qy img {
+    width: 90%;
+}
+
+.img-qy li {
+    text-align: right;
+}
+
+.img-qy li:first-child {
+    text-align: left;
+}
+
+.map {
+    padding-right: 60px;
+}
+
+.map .map-left {
+    background-image: url("../image/practice/jx.png");
+    width: 450px;
+    height: 450px;
+    position: relative;
+}
+
+.map .map-image {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+}
+
+.map .map-submit {
+    width: 450px;
+    background: white;
+    height: 350px;
+    box-shadow: 4px 4px 4px 4px #ccc;
+    position: absolute;
+    left: 80%;
+    top: 40%;
+    transform: translateY(-40%);
+    padding-top: 40px;
+    padding-left: 100px;
+}
+
+.map .map-submit h3 {
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+
+.map .map-submit textarea, .map .map-submit input {
+    background: #F0F2FA;
+    padding-left: 20px;
+    width: 200px;
+    display: flex;
+    font-size: 12px;
+}
+
+.map .map-submit input {
+    line-height: 37px;
+    margin-bottom: 23px;
+
+}
+
+.map .map-submit textarea {
+    resize: none;
+    border: none;
+}
+
+.send {
+    position: absolute;
+    width: 120px;
+    right: -25px;
+    background: #2878FF;
+    color: white;
+    line-height: 40px;
+    border-radius: 20px;
+    bottom: 10px;
+    cursor: pointer;
+}

@@ -1,0 +1,79 @@
+.container {
+    margin: auto;
+    width: 1080px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.english {
+    color: #666666;
+    font-size: 8px;
+}
+
+.service {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 13px;
+}
+
+.bg {
+    width: 63px;
+    height: 3px;
+    border-radius: 2px;
+    background: #2878FF;
+    margin: auto;
+    margin-bottom: 32px;
+}
+
+.al-ry {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.al-ry li {
+    width: 25%;
+    margin-bottom: 20px;
+
+    padding: 8px;
+
+}
+
+.al-ry li img {
+    width: 90%;
+    box-shadow: -1px 0 2px 4px rgb(239, 239, 239);;
+    border-radius: 5px;
+}
+
+.center {
+    margin: auto;
+    text-align: center;
+}
+
+.business-project-text {
+    color: #666666;
+    padding-left: 20px;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.standard-container {
+    width: 1000px;
+}
+
+.paging .next {
+    width: 60px;
+    font-size: 14px;
+}
+
+.paging .active {
+    color: #FFFFFF;
+    background-color: #2878FF;
+}
+
+.box-sh {
+    box-shadow: 1px 1px 3px #aaa;
+}

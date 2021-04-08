@@ -1,0 +1,45 @@
+.slice-grid {
+    margin-top: 10px;
+    margin-left: 600px;
+    width: 800px;
+}
+
+.slice-grid-pic-text {
+    position: relative;
+    float: left;
+    width: 25%;
+    height: 240px;
+    margin-top: 60px;
+    font-size: 10px;
+}
+
+.slice-grid-pic {
+    display: block;
+    width: 153px;
+    height: 208px;
+}
+
+.ss-pic {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 173px;
+    height: 32px;
+    left: -10px;
+    top: 200px;
+}
+
+.ss-text {
+    position: absolute;
+    font-size: 10px;
+    font-family: "Microsoft YaHei UI";
+    color: #FFFFFF;
+}
+
+.slice-grid-pic-text p {
+    position: absolute;
+    color: #666666;
+    font-size: 9px;
+    top: 240px;
+    left: 40px;
+}

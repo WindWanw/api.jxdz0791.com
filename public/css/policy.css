@@ -1,0 +1,54 @@
+.crumb {
+    margin-top: 50px;
+    margin-left: 500px;
+}
+
+.pol-first-section {
+    margin-left: 560px;
+    margin-top: 56px;
+}
+
+.pol-title {
+    font-size: 20px;
+    color: #333333;
+    font-family: "Microsoft YaHei UI";
+    text-align: left;
+}
+
+.pol-publish {
+    padding-top: 15px;
+    font-size: 9px;
+    color: #999999;
+    text-align: left;
+}
+
+.pol-center-section {
+    margin-left: 560px;
+    margin-top: 50px;
+    width: 666px;
+    height: 333px;
+}
+
+.pol-plane {
+    position: relative;
+    width: 100%;
+}
+
+.pol-play {
+    position: absolute;
+    left: 850px;
+    top: 450px;
+    width: 47px;
+    height: 47px;
+}
+
+.remark {
+    margin-left: 550px;
+    margin-top: 60px;
+    width: 650px;
+}
+
+.remark p {
+    color: #999999;
+    font-size: 8px;
+}

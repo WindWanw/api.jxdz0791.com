@@ -1,0 +1,93 @@
+.standard-container2 {
+    display: flex;
+    margin-bottom: 130px;
+}
+
+.standard-container2-right {
+    width: 569px;
+}
+
+.standard-container2-right .jzgc {
+    font-size: 22px;
+    line-height: 50px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.dj {
+    font-size: 16px;
+    margin-top: 89px;
+    margin-bottom: 54px;
+}
+
+.standard-container2-context h4 {
+    font-size: 18px;
+
+}
+
+.standard-container2-context .text {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 25px;
+}
+
+.standard-container2-context .text {
+    font-size: 16px;
+}
+
+.standard-container2-context .standard-container2-context-title {
+    margin-bottom: 25px;
+    font-size: 18px;
+}
+
+.standard-container2-left {
+    width: 240px;
+    margin-right: 50px;
+    box-shadow: 0 0 10px #aaaaaa;
+    padding: 0 20px;
+}
+
+.standard-left-list .parent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    line-height: 53px;
+    justify-content: center;
+
+}
+
+.standard-left-list li {
+    width: 100%;
+    cursor: pointer;
+}
+
+.standard-left-list li span {
+    border-bottom: 1px solid #CCCCCC;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.standard-left-list li span.active {
+    color: #2878FF;
+}
+.standard-left-list-2 {
+    width: 100%;
+}
+
+.standard-left-list-2 li span {
+    margin-left: 20px;
+    width: calc(100% - 20px);
+}
+
+.standard-left-list-3 {
+    width: 100%;
+}
+
+.standard-left-list-3 li span {
+    margin-left: 40px;
+    width: calc(100% - 40px);
+}
+
+.jia {
+    margin-right: 10px;
+}

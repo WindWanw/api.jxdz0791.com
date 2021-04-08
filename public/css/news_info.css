@@ -1,0 +1,123 @@
+.head-section {
+    margin-left: 200px;
+}
+
+.head-section img {
+    width: 1500px;
+    height: 500px;
+}
+
+.rank {
+    margin-top: 50px;
+    margin-left: 600px;
+}
+
+.rank a {
+    font-family: "Microsoft YaHei UI";
+    color: #333333;
+    font-size: 15px;
+    margin-left: 30px;
+    list-style: none;
+}
+
+.rank a:hover {
+    color: #FFFFFF;
+    background-color: #2878FF;
+}
+
+.line {
+    margin-left: 65px;
+    color: #2878FF;
+}
+
+.sort {
+    margin-top: 30px;
+    margin-left: 500px;
+    color: #333333;
+}
+
+.sort p {
+    font-size: 15px;
+    float: left;
+}
+
+.sort a {
+    float: left;
+    color: #666666;
+    font-size: 15px;
+    margin-left: 20px;
+}
+
+.sort a:hover {
+    color: #FBB730;
+}
+
+.grid {
+    margin-top: 70px;
+    margin-left: 500px;
+    width: 1000px;
+}
+
+.grid-pic-text {
+    position: relative;
+    float: left;
+    width: 25%;
+    margin-top: 15px;
+    font-size: 10px;
+}
+
+.grid-pic {
+    width: 173px;
+    height: 120px;
+}
+
+.time {
+    position: absolute;
+    color: #FFFFFF;
+    font-size: 8px;
+    left: 130px;
+    top: 100px;
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.bofang {
+    position: absolute;
+    color: #FFFFFF;
+    font-size: 8px;
+    left: 10px;
+    top: 100px;
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.grid-pic-text p {
+    margin-top: 10px;
+}
+
+.play {
+    position: absolute;
+    top: 50px;
+    left: 70px;
+    width: 30px;
+    height: 30px;
+    opacity: 0.7;
+    z-index: 2;
+}
+
+.paging {
+    float: left;
+    margin-top: 50px;
+    margin-left: 800px;
+    list-style: none;
+}
+
+.paging a {
+    color: #1A1A1A;
+    background-color: #E6E6E6;
+}
+
+.paging a:hover {
+    color: #FFFFFF;
+    background-color: #2878FF;
+}

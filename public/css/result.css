@@ -1,0 +1,31 @@
+ul, li, p, h1, h2, h3, dl, dt, body {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+li,div {
+    box-sizing: border-box;
+}
+img {
+    margin: 0;
+    padding: 0;
+}
+input, button {
+    border: none;
+}
+input, button, select,textarea {
+    border: none;
+    outline: none;
+    outline-color: snow !important;
+}
+textarea {
+    resize:none;
+}
