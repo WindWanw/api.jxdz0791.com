@@ -2,12 +2,12 @@
 
 namespace App\Model\Admin;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model\BaseModel as Model;
 
-class Area extends Model
+class AdminOrg extends Model
 {
     //
-    protected $table  = "areas";
+    protected $table  = "admin_orgs";
 
     public $fillable = ["pid", "name", "level", "sort", "user_id", "status"];
 
@@ -16,10 +16,18 @@ class Area extends Model
         return $this->belongsTo(AdminUser::class, "user_id", "id");
     }
 
+    public function scopeOrg($query, $value)
+    {
+        if (!empty($value)) {
+            return $query->whereIn("id", $value);
+        }
+    }
+
     public function scopeStatus($query, $value)
     {
         if (isset($value)) {
             return $query->where("status", $value);
         }
     }
+
 }

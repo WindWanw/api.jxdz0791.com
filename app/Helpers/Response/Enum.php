@@ -17,6 +17,12 @@ class Enum
     const IMAGE_TYPE_ERROR=5005;//图片类型错误
     const IMAGE_SIZE_ERROR=5007;//图片大小错误
 
+
+    const ROUTES_ERROR_METHOD   =   4444;   //URL请求方式不对
+    const ROUTES_ERROR          =   4445;     //URL地址错误
+
+    const SERVICE_ERROR          =   503;     //网络错误
+
     // public function __callStatic($name, $arguments)
     // {
 

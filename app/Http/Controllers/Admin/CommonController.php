@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Admin\AdminMenu;
 use App\Model\Admin\AdminRole;
 use App\Model\Admin\AdminUser;
+use App\Model\Admin\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,6 +22,7 @@ class CommonController extends Controller
             'menu' => new AdminMenu(),
             'role' => new AdminRole(),
             'user' => new AdminUser(),
+            'customer' => new Customer(),
         ];
     }
 
@@ -169,5 +171,46 @@ class CommonController extends Controller
     {
 
         return R::ok(Storage::disk("qiniu")->getDriver()->downloadUrl($r->name));
+    }
+
+    /**
+     * 获取客户管理配置
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function getCustomerConfig(Request $r)
+    {
+
+        return R::ok($this->configCustomer($r->data));
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function download(Request $r)
+    {
+        if (!isset($r->url)) {
+            return R::error("不存在url");
+        }
+
+        $suffix = "file.";
+
+        try {
+            $url = explode(".", $r->url);
+
+            $suffix .= end($url);
+
+        } catch (\Throwable $th) {
+            $suffix .= "pdf";
+        }
+
+        return response()->streamDownload(function () use ($r) {
+            echo \file_get_contents($r->url);
+        }, $suffix);
+
     }
 }

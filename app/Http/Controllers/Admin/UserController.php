@@ -21,7 +21,10 @@ class UserController extends Controller
     public function login(Request $r)
     {
 
-        $user = UserService::findByUsername($r->username);
+        //通过账号
+        // $user = UserService::findByUsername($r->username);
+
+        $user = UserService::findUserByData($r->username);
 
         if (!$user) {
             return R::error("用户账号不存在,请输入正确的账号", Enum::USERNAME_NOT_EXIST);
@@ -29,6 +32,16 @@ class UserController extends Controller
 
         if (!password_verify($r->password, $user->password)) {
             return R::error("密码错误，请重新输入！", Enum::PASSWORD_ERROR);
+        }
+
+        if (!$user->status) {
+            return R::error('您的账户信息被锁定，详情请联系管理员', Enum::USER_LOGIN_ERROR);
+
+        }
+
+        if ($user->status == "99") {
+            return R::error('您已离职，无法登陆，详情请联系管理员', Enum::USER_LOGIN_ERROR);
+
         }
 
         if (UserService::setUserLoginInfo($user)) {
@@ -51,9 +64,16 @@ class UserController extends Controller
 
         $uid = $this->getUserId();
 
-        $data = UserService::findById($uid, ["username", "nickname", "head_img"]);
+        $data = UserService::user()
+            ->with(["role" => function ($query) {
+                $query->select("id");
+            }])
+            ->where("id", $uid)
+            ->select(["id", "username", "nickname", "head_img"])
+            ->first();
         $data["path"] = UserService::getUserPath($uid);
         $data["menu"] = AuthService::menu()->status(1)->get(["title", "code"]);
+        $data["actions"] = UserService::getUserActions();
 
         return R::ok($data);
     }

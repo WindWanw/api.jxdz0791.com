@@ -35,6 +35,9 @@ class AuthMiddleware
 
         if (!$this->user->status) {
             return R::error('您的账户信息被锁定，详情请联系管理员', Enum::USER_LOGIN_ERROR);
+        } else if ($this->user->status == "99") {
+            return R::error('您已离职，无法登陆，详情请联系管理员', Enum::USER_LOGIN_ERROR);
+
         }
 
         if (!$this->user->role || !$this->user->role->status) {

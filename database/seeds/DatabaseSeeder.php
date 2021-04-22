@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         'menu' => 'admin_menus',
         'user_role' => 'admin_user_roles',
         'role_menu' => 'admin_role_menus',
-        'area' => 'areas',
+        'org' => 'admin_orgs',
     ];
 
     /**
@@ -152,7 +152,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s', time()),
         ];
 
-        return DB::table(self::T('area'))->insertGetId($data);
+        return DB::table(self::T('org'))->insertGetId($data);
 
     }
 

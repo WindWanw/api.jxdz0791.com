@@ -28,7 +28,7 @@ class CreateAdminUsersTable extends Migration
             $table->unsignedInteger('up_time')->default(0)->comment('上一次登录时间');
             $table->char('last_ip', 15)->default('')->comment('最后登录IP');
             $table->unsignedInteger('last_time')->default(0)->comment('最后登录时间');
-            $table->unsignedTinyInteger('status')->default(1)->comment('是否锁定1启用0禁用');
+            $table->unsignedTinyInteger('status')->default(1)->comment('是否锁定，1启用，0禁用，99离职');
 
             $table->timestamps();
 

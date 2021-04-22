@@ -3,18 +3,148 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Model\Admin\AdminRole;
 use Facades\App\Service\Admin\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use App\Model\Admin\AdminRole;
+use App\Model\Admin\Customer;
+
 
 class TestController extends Controller
 {
     //
+    public function setFileUrl(array $file)
+    {
+
+        if (!$file) {
+            return "";
+        }
+
+        $data = \array_map(function ($f) {
+
+            $host = env("APP_URL");
+
+            return \str_replace($host, "", $f);
+        }, $file);
+
+        return $data;
+
+    }
+
+    public function getFileUrl($file)
+    {
+
+        $_file = \json_decode($file);
+
+        if (empty($_file)) {
+            return [];
+        }
+
+        $data = \array_map(function ($f) {
+
+            $host = env("APP_URL");
+
+            //如果存在该域名，返回原数据
+            if ((\strpos($f, $host) !== false)) {
+                return $f;
+            }
+
+            return $host . $f;
+
+        }, $_file);
+
+        return $data;
+
+    }
+
+    public function getNotEmptyData(array $array)
+    {
+
+        $data = array_map(function ($a) {
+
+            $list = array_filter($a);
+
+            return array_filter($a);
+
+        }, $array);
+
+        return array_filter($data);
+    }
+
+    public function get2ArrayValueFromData(array $array, $key, $flag = true)
+    {
+        $data = array_column($array, $key);
+
+        return $flag ? max($data) : min($data);
+    }
+
+    public function getRecentTime(array $array, $key)
+    {
+
+        $data = array_filter($array, function ($d) use ($key) {
+            if (\strtotime($d[$key]) < time()) {
+                return true;
+            }
+        });
+
+        if ($data) {
+            $time = $this->get2ArrayValueFromData($data, $key, false);
+        } else {
+            $time = $this->get2ArrayValueFromData($array, $key, false);
+
+        }
+
+        return $time;
+
+    }
 
     public function index(Request $r)
     {
+
+
+        $list=Customer::where("customer_type",100)->get()->toArray();
+
+        dd($list);
+
+        $data = [
+            [
+                "name" => [],
+                "age" => "2021-04-20",
+            ],
+            [
+                "name" => "",
+                "age" => "2021-04-23",
+            ],
+            [
+                "name" => "",
+                "age" => "2021-04-22",
+            ],
+        ];
+
+        print_r($this->getRecentTime($data, "age"));die;
+
+        print_r($this->getNotEmptyData($data));die;
+
+        // var_dump(empty(json_decode("")));die;
+
+        $info = [
+            "http://www.gy_dz.com/storage/crm/202104/1618796194-607cdea251ccd.jpg",
+            "http://www.gy_dz.com/storage/crm/202104/1618796194-607cdea251ccd.jpg",
+            "/storage/crm/202104/1618796194-607cdea251ccd.jpg",
+            "http://www.gy_dz.com/crm/202104/1618796194-607cdea251ccd.jpg",
+        ];
+
+        $data = $this->setFileUrl($info);
+        print_r($data);
+
+        $url = \json_encode($data);
+
+        print_r($url);
+
+        print_r($this->getFileUrl($url));
+
+        die;
 
         // Cache::put('username_file','wanwei',1);
 
@@ -375,12 +505,12 @@ export default asyRoute;";
 
         print_r(AdminRole::value("name"));die;
 
-        $data=[
-            "name"=>"haha",
-            "describe"=>""
+        $data = [
+            "name" => "haha",
+            "describe" => "",
         ];
 
-        if(AdminRole::edit(["id"=>26],$data)){
+        if (AdminRole::edit(["id" => 26], $data)) {
             echo "修改成功";
         }
 

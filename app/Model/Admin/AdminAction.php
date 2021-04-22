@@ -2,7 +2,7 @@
 
 namespace App\Model\Admin;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model\BaseModel as Model;
 
 class AdminAction extends Model
 {

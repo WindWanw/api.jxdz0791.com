@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\Response\Enum;
+use App\Helpers\Response\ResponseFactory;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -48,14 +50,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof MethodNotAllowedHttpException || $exception instanceof NotFoundHttpException) {
-            if (!($request->ajax() || $request->wantsJson())) {
-                return response()->view('404');
-            }
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return ResponseFactory::error("URL请求方式不对",Enum::ROUTES_ERROR_METHOD);
+        }
+        if ($exception instanceof NotFoundHttpException) {
+            return ResponseFactory::error("URL地址错误",Enum::ROUTES_ERROR);
         }
 
         if (!$request->is('admin/*') && $exception) {
-            return response()->view('503');
+            return ResponseFactory::error("503",Enum::SERVICE_ERROR);
+            //return response()->view('503');
         }
         return parent::render($request, $exception);
     }

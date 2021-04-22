@@ -38,12 +38,17 @@ Route::group([
 
         //上传文件
         $router->post('upload', 'CommonController@upload');
+        //文件下载
+        $router->get('download', 'CommonController@download');
+
         //判断文件是否存在
         $router->get('hasFile', 'CommonController@hasFile');
         //七牛云token
         $router->get('getQiniuToken', 'CommonController@getQiniuToken');
         //上传七牛云文件地址
         $router->get('getFileName', 'CommonController@getFileName');
+        //客户管理配置
+        $router->get('getCustomerConfig', 'CommonController@getCustomerConfig');
     });
 
     //权限组
@@ -65,6 +70,33 @@ Route::group([
 
         });
 
+        //客户管理
+        $router->group([
+            'prefix' => 'custom',
+        ], function ($router) {
+
+            //客户列表 my我的，all全部 lower下级客户
+            $router->get('getCustomerlist', "CustomController@getCustomerlist");
+            //添加客户
+            $router->post('addCustomer', "CustomController@addCustomer")->name("admin.custom.addCustomer");
+            //修改客户
+            $router->post('editCustomer', "CustomController@editCustomer")->name("admin.custom.editCustomer");
+
+            //跟进记录
+            $router->get('getFollowUpRecord', "CustomController@getFollowUpRecord");
+            //添加跟进
+            $router->post('addFollowUp', 'CustomController@addFollowUp')->name("admin.custom.addFollowUp");
+            //回复跟进
+            $router->post('addFollowUpRemarks', 'CustomController@addFollowUpRemarks')->name("admin.custom.addFollowUpRemarks");
+            //负责人信息
+            $router->get('getHeadUser', 'CustomController@getHeadUser');
+            //添加转交信息
+            $router->post('addTransInfo', 'CustomController@addTransInfo')->name("admin.custom.addTransInfo");
+
+            //客户列表 my我的，all全部 lower下级客户
+            $router->get('{type}/list/', "CustomController@list")->where("type", "^(my|all|lower)$");
+        });
+
         //系统管理
         $router->group([
             'prefix' => 'system',
@@ -78,6 +110,14 @@ Route::group([
             $router->post('addArea', 'SystemController@addArea')->name('admin.system.addArea');
             //修改地区
             $router->post('editArea', 'SystemController@editArea')->name('admin.system.editArea');
+
+            //获取资质树形数据
+            $router->get('getQualiTree', 'SystemController@getQualiTree');
+            //添加资质
+            $router->post('addQuali', 'SystemController@addQuali')->name('admin.system.addQuali');
+            //修改资质
+            $router->post('editQuali', 'SystemController@editQuali')->name('admin.system.editQuali');
+
         });
 
         //权限管理

@@ -2,7 +2,8 @@
 
 namespace App\Service\Admin;
 
-use App\Model\Admin\Area;
+use App\Model\Admin\AdminOrg;
+use App\Model\Admin\Qualification;
 use App\Service\Service;
 
 /**
@@ -13,7 +14,12 @@ class SystemService extends Service
 
     public function area()
     {
-        return new Area();
+        return new AdminOrg();
+    }
+
+    public function qualification()
+    {
+        return new Qualification();
     }
 
     /**
@@ -96,5 +102,46 @@ class SystemService extends Service
     public function editArea($data)
     {
         return $this->area()->find($data["id"])->update($data);
+    }
+
+    /**
+     * 获取资质树状数据
+     *
+     * @return void
+     */
+    public function getQualiTree()
+    {
+        $list = $this->qualification()
+            ->orderBy("sort", "desc")
+            ->get(["id", "pid", "title", "sort", "status"])
+            ->toArray();
+
+        $data = $this->getInfinitePolarClassification($list);
+
+        return $data;
+
+    }
+
+    /**
+     * 添加地区
+     *
+     * @param [type] $data
+     * @return void
+     */
+    public function addQuali($data)
+    {
+
+        return $this->qualification()->create($data);
+    }
+
+    /**
+     * 修改地区
+     *
+     * @param [type] $data
+     * @return void
+     */
+    public function editQuali($data)
+    {
+        return $this->qualification()->find($data["id"])->update($data);
     }
 }

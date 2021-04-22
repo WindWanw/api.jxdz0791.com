@@ -47,7 +47,37 @@ class UserService extends Service
     public function findByUsername($username)
     {
 
-        return $this->user()->where("username", $username)->first();
+        return $this->user()->username($username)->first();
+    }
+
+    /**
+     * 通过相关信息查找用户
+     *
+     * @param [type] $data  包含账号/手机号/员工号
+     * @return void
+     */
+    public function findUserByData($data)
+    {
+
+        $username = $this->user()->username($data)->first();
+
+        $phone = $this->user()->tel($data)->first();
+
+        $user = $this->user()->whereHas("users_info", function ($query) use ($data) {
+            $query->jobNumber($data);
+        })->first();
+
+        $info = array_filter([$username, $phone, $user]);
+
+        if ($info) {
+
+            foreach ($info as $key => $value) {
+                return $value;
+            }
+        }
+
+        return false;
+
     }
 
     /**
@@ -126,50 +156,6 @@ class UserService extends Service
     }
 
     /**
-     * 处理用户信息
-     *
-     * @param [type] $user
-     * @return void
-     */
-    public function _setUserLoginInfo($user)
-    {
-        $token = $this->findToken($user->id);
-
-        DB::beginTransaction();
-
-        try {
-
-            $token->access_token = Token::generateToken();
-            $token->expired_time = date("Y-m-d H:i:s", \strtotime("+ 7 days"));
-            $token->updated_ip = Utils::ipAddress();
-
-            if ($token->save()) {
-
-                $user->logintime = DB::raw('logintime+1');
-                $user->up_ip = $user->last_ip;
-                $user->up_time = $user->last_time;
-                $user->last_ip = Utils::ipAddress();
-                $user->last_time = time();
-
-                if ($user->save()) {
-                    DB::commit();
-                    return true;
-                }
-            }
-
-            DB::rollback();
-
-        } catch (\Exception $e) {
-
-            DB::rollback();
-
-            throw new \Exception($e->getMessage());
-        }
-
-        return false;
-    }
-
-    /**
      * 根据用户id获取用户登录信息
      *
      * @param [type] $uid
@@ -227,6 +213,35 @@ class UserService extends Service
         $user->password = \password_hash($password, PASSWORD_DEFAULT);
 
         return $user->save();
+    }
+
+    /**
+     * 获取当前用户权限操作
+     *
+     * @return void
+     */
+    public function getUserActions()
+    {
+        $config_action = $this->getConfigActionsValue();
+
+        foreach ($config_action as $key => $value) {
+
+            $list = $this->role_menu()
+                ->where("role_id", $this->getRoleId())
+                ->whereHas("menu", function ($query) use ($value) {
+                    $query->code($value);
+                })
+                ->first();
+
+            if ($list) {
+                $data[$value] = $list->toArray()["menu_actions"];
+            } else {
+                $data[$value] = [];
+            }
+
+        }
+
+        return $data;
     }
 
 }

@@ -21,31 +21,9 @@ class Process
             'admin.user.addUser' => 'UserRequest.addIndexUser',
             'admin.user.editUser' => 'UserRequest.editIndexUser',
 
-            'admin.news.addNewsColumn' => 'NewsColumnRequest.addNewsColumn',
-            'admin.news.editNewsColumn' => 'NewsColumnRequest.editNewsColumn',
-            'admin.news.addNews' => 'NewsRequest.addNews',
-            'admin.news.editNews' => 'NewsRequest.editNews',
-
-            'admin.qualification.addQualificationColumn' => 'QualificationColumnRequest.addQualificationColumn',
-            'admin.qualification.editQualificationColumn' => 'QualificationColumnRequest.editQualificationColumn',
-            'admin.qualification.addQualification' => 'QualificationRequest.addQualification',
-            'admin.qualification.editQualification' => 'QualificationRequest.editQualification',
-
-            'admin.video.addVideoColumn' => 'VideoColumnRequest.addVideoColumn',
-            'admin.video.editVideoColumn' => 'VideoColumnRequest.editVideoColumn',
-            'admin.video.addVideo' => 'VideoRequest.addVideo',
-            'admin.video.editVideo' => 'VideoRequest.editVideo',
-            'admin.video.addInternalVideo' => 'InternalVideoRequest.addInternalVideo',
-            'admin.video.editInternalVideo' => 'InternalVideoRequest.editInternalVideo',
-
-            'admin.anno.addAnno' => 'AnnoRequest.addAnno',
-            'admin.anno.editAnno' => 'AnnoRequest.editAnno',
-
-            'admin.nav.addNavColumn' => 'NavColumnRequest.addNavColumn',
-            'admin.nav.editNavColumn' => 'NavColumnRequest.editNavColumn',
-
-            'admin.system.addDomainArea' => 'DomainAreaRequest.addDomainArea',
-            'admin.system.editDomainArea' => 'DomainAreaRequest.editDomainArea',
+            //客户管理
+            'admin.custom.addCustomer' => 'CustomerRequest.addCustomer',
+            'admin.custom.editCustomer' => 'CustomerRequest.editCustomer',
         ];
     }
 }

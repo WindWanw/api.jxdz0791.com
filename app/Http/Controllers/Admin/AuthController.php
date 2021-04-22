@@ -37,9 +37,10 @@ class AuthController extends Controller
     public function getMenus(Request $r)
     {
 
-        $list = AuthService::_getMenuInfo($r->type);
+        $data["list"] = AuthService::_getMenuInfo($r->type);
+        $data["check"] = AuthService::_getActions();
 
-        return R::ok($list);
+        return R::ok($data);
     }
 
     /**
@@ -177,9 +178,36 @@ class AuthController extends Controller
      */
     public function getUserList(Request $r)
     {
-        $list = AuthService::user()->with(["role" => function ($query) {
-            $query->select(["id", "name"]);
-        }])
+
+        $orgs = [];
+        //获取组织架构父级子级集合
+        if (isset($r->org)) {
+            $orgs = AuthService::getOrgsList($r->org);
+        }
+
+        $list = AuthService::user()
+            ->with(
+                [
+                    "role" => function ($query) {
+                        $query->select(["id", "name"]);
+                    },
+                    "org" => function ($query) {
+                        $query->select(["id", "name"]);
+                    },
+                    "users_info" => function ($query) {
+                        $query->select(["id", "user_id", "job_number", "name", "gender"]);
+                    },
+                ]
+            )
+            ->whereHas("users_info", function ($query) use ($r) {
+                $query->name($r->name);
+            })
+            ->whereHas("org", function ($query) use ($orgs) {
+                $query->org($orgs);
+            })
+            ->statusT($r->statusT)
+            ->status($r->status)
+            ->phone($r->phone)
             ->orderBy("id", "desc")
             ->paginate($r->limit);
 
@@ -196,6 +224,16 @@ class AuthController extends Controller
      */
     public function addUser(Request $r)
     {
+
+        if ($r->username == $r->phone) {
+            return R::error("账号不能与手机号相同，请修改后提交");
+        }
+
+        if (preg_match("/DZ[1-9][0-9]{4}/", $r->username)) {
+            return R::error("账号格式错误，不能与工号格式相同，请修改后提交");
+
+        }
+
         if (AuthService::addUser($r->all())) {
 
             return R::success("添加成功");
@@ -213,6 +251,14 @@ class AuthController extends Controller
      */
     public function editUser(Request $r)
     {
+        if ($r->username == $r->phone) {
+            return R::error("账号不能与手机号相同，请修改后提交");
+        }
+
+        if (preg_match("/DZ[1-9][0-9]{4}/", $r->username)) {
+            return R::error("账号格式错误，不能与工号格式相同，请修改后提交");
+
+        }
 
         if (AuthService::checkUnique(["username" => $r->username], 'user', $r->id)) {
             return R::error("用户账号已经存在，请重新输入");

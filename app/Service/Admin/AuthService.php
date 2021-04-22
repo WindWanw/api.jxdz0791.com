@@ -3,10 +3,13 @@
 namespace App\Service\Admin;
 
 use App\Model\Admin\AdminMenu;
+use App\Model\Admin\AdminOrg;
 use App\Model\Admin\AdminRole;
 use App\Model\Admin\AdminRoleMenu;
 use App\Model\Admin\AdminUser;
+use App\Model\Admin\AdminUserOrg;
 use App\Model\Admin\AdminUserRole;
+use App\Model\Admin\AdminUsersInfo;
 use App\Service\Service;
 use Facades\App\Helpers\Extra\Utils;
 use Illuminate\Support\Facades\DB;
@@ -34,9 +37,24 @@ class AuthService extends Service
         return new AdminUser();
     }
 
+    public function user_info()
+    {
+        return new AdminUsersInfo();
+    }
+
     public function user_role()
     {
         return new AdminUserRole();
+    }
+
+    public function user_org()
+    {
+        return new AdminUserOrg();
+    }
+
+    public function orgs()
+    {
+        return new AdminOrg();
     }
 
     /**
@@ -96,6 +114,38 @@ class AuthService extends Service
 
     }
 
+    public function _getActions($role = 0)
+    {
+
+        // $rid = $this->user_role()->where("user_id", $uid)->first()->role_id;
+
+        $config_action = $this->getConfigActionsValue();
+
+        foreach ($config_action as $key => $value) {
+
+            $list = $this->role_menu()
+                ->where("role_id", $role)
+                ->whereHas("menu", function ($query) use ($value) {
+                    $query->code($value);
+                })
+                ->first();
+
+            if ($role && $list) {
+
+                $data[$value] = $list->toArray()["menu_actions"];
+
+            } else {
+                $data[$value] = ["view"];
+            }
+
+            $isIndeterminate[$value] = count($data[$value]) == count($this->getAction($value)) ? false : true;
+
+            $checkAll[$value] = count($data[$value]) == count($this->getAction($value)) ? true : false;
+        }
+
+        return ["actions" => $data, "isIndeterminate" => $isIndeterminate, "checkAll" => $checkAll];
+    }
+
     /**
      * 菜单无限极分类
      *
@@ -105,7 +155,7 @@ class AuthService extends Service
 
     private function _g($pid = 0)
     {
-        $list = $this->menu()->get(["id", "title", "pid", "status"])->toArray();
+        $list = $this->menu()->get(["id", "title", "code", "pid", "status"])->toArray();
 
         $data = [];
 
@@ -116,8 +166,9 @@ class AuthService extends Service
                     $v = $value;
                     $v["id"] = (string) $value["id"];
                     $v["children"] = $this->_g($value["id"]);
+                    $v["actions"] = $this->getAction($v["code"]);
                     $data[] = array_filter($v, function ($d) {
-                        if ($d == 0 || $d == "0" || $d) {
+                        if ($d == 0 || $d == "0" || \is_array($d) || $d) {
                             return true;
                         } else {
                             return false;
@@ -204,7 +255,7 @@ class AuthService extends Service
                     foreach ($menu_id as $key => $value) {
 
                         //超级管理员默认绑定所有
-                        if (!$this->role_menu()->create(["role_id" => 1, "menu_id" => $value])) {
+                        if (!$this->role_menu()->create(["role_id" => 1, "menu_id" => $value, "menu_actions" => $this->_expendMenu($value)])) {
                             return false;
                         }
                     }
@@ -223,6 +274,39 @@ class AuthService extends Service
         return false;
     }
 
+    /**
+     * 获取当前菜单所有的操作
+     *
+     * @param [type] $mid
+     * @return void
+     */
+    public function _expendMenu($mid)
+    {
+
+        $m = $this->menu()->find($mid);
+
+        $data = [];
+
+        if ($m) {
+
+            $actions = $this->getAction($m->code);
+
+            foreach ($actions as $key => $value) {
+                $data[] = $value["value"];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * 添加所有菜单
+     *
+     * @param array $menu
+     * @param integer $pid
+     * @param integer $level
+     * @return void
+     */
     public function saveAllMenu(array $menu, $pid = 0, $level = 1)
     {
 
@@ -330,7 +414,7 @@ class AuthService extends Service
 
                 foreach ($menu_ids as $value) {
 
-                    if (!$role_menu->create(["role_id" => $role->id, "menu_id" => $value])) {
+                    if (!$role_menu->create(["role_id" => $role->id, "menu_id" => $value, "menu_actions" => $this->_getMenuAction($value, $data["actions"])])) {
                         return false;
                     }
                 }
@@ -341,6 +425,24 @@ class AuthService extends Service
 
         }, $role, $role_menu, $data);
 
+    }
+
+    /**
+     * 获取当前菜单的操作
+     *
+     * @param [type] $mid
+     * @param [type] $data
+     * @return void
+     */
+    public function _getMenuAction($mid, $data)
+    {
+        $code = $this->menu()->find($mid)->code;
+
+        if (isset($data[$code])) {
+            return $data[$code];
+        }
+
+        return [];
     }
 
     /**
@@ -426,7 +528,7 @@ class AuthService extends Service
                 //再将传入的菜单id添加
                 foreach ($menu_ids as $value) {
 
-                    if (!$role_menu->create(["role_id" => $role->id, "menu_id" => $value])) {
+                    if (!$role_menu->create(["role_id" => $role->id, "menu_id" => $value, "menu_actions" => $this->_getMenuAction($value, $data["actions"])])) {
                         return false;
                     }
                 }
@@ -451,6 +553,8 @@ class AuthService extends Service
 
             $object[$key]['creater'] = $value->user->nickname ?? $value->user->username;
             $object[$key]['menu_id'] = $this->getRoleMenuId($value->id);
+            $object[$key]["check"] = $this->_getActions($value->id);
+
         }
 
         return $object;
@@ -529,16 +633,34 @@ class AuthService extends Service
 
         $user_role = $this->user_role();
 
-        return $this->action(function ($user, $user_role, $data) {
+        $user_info = $this->user_info();
+
+        return $this->action(function ($user, $user_role, $user_info, $data) {
 
             $user->username = $data["username"];
             $user->phone = $data["phone"];
             $user->password = \password_hash($data["password"], PASSWORD_DEFAULT);
+            $user->is_up_level = $data["is_up_level"];
             $user->reg_ip = Utils::ipAddress();
             $user->reg_time = time();
             $user->status = $data["status"];
 
             if ($user->save() === false) {
+                return false;
+            }
+
+            $user_infos = [
+                "user_id" => $user->id,
+                "job_number" => "DZ" . (10000 + $user->id),
+                "name" => $data["name"],
+                "gender" => $data["gender"],
+            ];
+
+            if (!$user_info->create($user_infos)) {
+                return false;
+            }
+
+            if (!$this->user_org()->create(["user_id" => $user->id, "org_id" => end($data["org"])])) {
                 return false;
             }
 
@@ -548,7 +670,7 @@ class AuthService extends Service
 
             return true;
 
-        }, $user, $user_role, $data);
+        }, $user, $user_role, $user_info, $data);
     }
 
     /**
@@ -562,23 +684,81 @@ class AuthService extends Service
 
         $user = $this->user()->find($data["id"]);
 
-        $user_role = $this->user_role();
-
-        return $this->action(function ($user, $user_role, $data) {
+        return $this->action(function ($user, $data) {
 
             $user->username = $data["username"];
             $user->phone = $data["phone"];
             $user->status = $data["status"];
+            $user->is_up_level = $data["is_up_level"];
 
+            //更新用户
             if ($user->save() === false) {
                 return false;
             }
 
-           $user_role->where("user_id", $user->id)->update(["role_id" => $data["role"]]);
+            $user_info = [
+                "name" => $data["name"],
+                "gender" => $data["gender"],
+            ];
+
+            //更新员工信息
+            if (!$this->user_info()->where("user_id", $user->id)->update($user_info)) {
+                return false;
+            }
+
+            //更新员工职务
+            $this->user_role()->where("user_id", $user->id)->update(["role_id" => $data["role"]]);
+
+            //更新员工所属单位
+            $this->user_org()->where("user_id", $user->id)->update(["org_id" => (is_array($data["org"])) ? end($data["org"]) : $data["org"]]);
 
             return true;
 
-        }, $user, $user_role, $data);
+        }, $user, $data);
+    }
+
+    /**
+     * 获取当前组织下的所有父级子级id集合
+     *
+     * @param [type] $org       组织id
+     * @return void
+     */
+    public function getOrgsList($org)
+    {
+
+        $data = $this->getTreeId($org);
+
+        return $this->prepend($data, $org);
+
+    }
+
+
+    /**
+     * 获取子级id
+     *
+     * @param integer $pid
+     * @return void
+     */
+    private function getTreeId($pid = 0)
+    {
+
+        $list = $this->orgs()->where("pid", $pid)->get(["id", "pid"])->toArray();
+
+        static $data = [];
+
+        if ($list) {
+
+            foreach ($list as $key => $value) {
+
+                if ($value["pid"] == $pid) {
+
+                    $data[] = $value["id"];
+                    $this->getTreeId($value["id"]);
+                }
+            }
+        }
+
+        return $data;
     }
 
 }

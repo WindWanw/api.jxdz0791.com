@@ -13,7 +13,7 @@ class Upload
     //上传文件类型
     private $type = "file";
     //上传文件大小限制
-    private $size = 2 * 1024 * 1024;
+    private $size = 20 * 1024 * 1024;
     //写入文件的前缀
     private $file_prepend = "<?php
             namespace App\Helpers\Config;
@@ -78,37 +78,34 @@ class Upload
     public function _uploadImage($r)
     {
 
-        //七牛云配置，如果调用接口时存在在线标志，则使用公司配置，否则使用自定义配置
-        //自定义配置30天有效期，创建于2020/11/03
-        $qiniu = isset($r->online) ? 'qiniu' : 'qiniu-test-30';
-
         //接收上传的图片
         $file = $r->file('file');
         //获取图片后缀名
         $suffix = $file->getClientOriginalExtension();
 
         //验证文件是否满足上传规则
-        if (!in_array($suffix, $this->file_suffix)) {
-            return ["message" => '请上传正确的图片格式', "error" => Enum::IMAGE_TYPE_ERROR];
-        }
+        // if (!in_array($suffix, $this->file_suffix)) {
+        //     return ["message" => '请上传正确的图片格式', "error" => Enum::IMAGE_TYPE_ERROR];
+        // }
         if ($file->getSize() > $this->size) {
-            return ["message" => '文件大小不能超过2MB', "error" => Enum::IMAGE_SIZE_ERROR];
+            return ["message" => '文件大小不能超过20MB', "error" => Enum::IMAGE_SIZE_ERROR];
         }
 
         $ext = $file->getClientOriginalExtension(); // 扩展名
 
         $realPath = $file->getRealPath(); //临时文件的绝对路径
         // 上传文件
-        $filename = date('Ymd') . '/' . time() . '-' . uniqid() . '.' . $ext;
+        $filename = 'crm/' . date('Ym') . '/' . time() . '-' . uniqid() . '.' . $ext;
+
         //这里的uploads是配置文件的名称
-        $bool = Storage::disk($qiniu)->put($filename, file_get_contents($realPath));
+        $bool = Storage::disk('public')->put($filename, file_get_contents($realPath));
 
         if ($bool != true) {
             //文件上传失败
             return ["message" => "上传失败", "error" => Enum::FAIL];
         }
 
-        return ["data" => Storage::disk($qiniu)->getDriver()->downloadUrl($filename)];
+        return ["data" => Storage::disk('public')->url($filename)];
 
     }
 

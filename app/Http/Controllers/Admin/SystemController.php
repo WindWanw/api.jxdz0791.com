@@ -79,4 +79,61 @@ class SystemController extends Controller
         return R::error("修改失败");
 
     }
+
+    /**
+     * 获取资质树状数据
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function getQualiTree(Request $r)
+    {
+        $data = SystemService::getQualiTree();
+
+        return R::ok($data);
+
+    }
+
+    /**
+     * 添加资质
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function addQuali(Request $r)
+    {
+        $data = $r->input();
+
+        if (SystemService::checkUnique(["title" => $r->title], "qualification")) {
+            return R::error("名称已经存在，请重新设置");
+        }
+
+        if (SystemService::addQuali($data)) {
+            return R::success("添加成功");
+        }
+
+        return R::error("添加失败");
+    }
+
+    /**
+     * 修改资质
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function editQuali(Request $r)
+    {
+        $data = $r->input();
+
+        if (SystemService::checkUnique(["title" => $r->title], "qualification", $r->id)) {
+            return R::error("名称已经存在，请重新设置");
+        }
+
+        if (SystemService::editQuali($data)) {
+            return R::success("修改成功");
+        }
+
+        return R::error("修改失败");
+
+    }
 }
